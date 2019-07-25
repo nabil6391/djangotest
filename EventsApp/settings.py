@@ -125,6 +125,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = "/home/nabil6391/EventsApp/static"
 
 GRAPHENE = {
     'SCHEMA': 'EventsApp.schema.schema',
