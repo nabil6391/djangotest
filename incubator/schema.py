@@ -3,7 +3,7 @@ from graphene import Node, Schema, ObjectType
 from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
 
-from incubator.models import App, AppLike, User
+from incubator.models import App, AppLike, User, SeerahTopic, SeerahQuestion, Dictionary
 
 
 class AppType(DjangoObjectType):
@@ -20,12 +20,63 @@ class AppLikeType(DjangoObjectType):
         filter_fields = ['app_id', 'uid']
 
 
+class SeerahTopicType(DjangoObjectType):
+    class Meta:
+        model = SeerahTopic
+        interfaces = (Node,)
+        filter_fields = ['id', 'name']
+
+
+class SeerahQuestionType(DjangoObjectType):
+    class Meta:
+        model = SeerahQuestion
+        interfaces = (Node,)
+        filter_fields = ['id', 'question','answer']
+
+
+class DictionaryType(DjangoObjectType):
+    class Meta:
+        model = Dictionary
+        interfaces = (Node,)
+        filter_fields = ['word', 'word_diacless','description']
+
+
+
 class Query(ObjectType):
     app = Node.Field(AppType)
     all_apps = DjangoFilterConnectionField(AppType)
 
     like = Node.Field(AppLikeType)
     all_likes = DjangoFilterConnectionField(AppLikeType)
+
+    seerah_question = Node.Field(SeerahQuestionType)
+    all_seerah_questions = DjangoFilterConnectionField(SeerahQuestionType)
+
+    seerah_topic = Node.Field(SeerahTopicType)
+    all_seerah_topics = DjangoFilterConnectionField(SeerahTopicType)
+
+    dictionary = Node.Field(DictionaryType)
+    all_dis = DjangoFilterConnectionField(DictionaryType)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 class CreateAppLike(graphene.Mutation):
