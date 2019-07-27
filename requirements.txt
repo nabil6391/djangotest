@@ -3,3 +3,5 @@ pytz
 sqlparse
 graphene_django
 django-filter
+django-import-export
+tablib==0.12.1

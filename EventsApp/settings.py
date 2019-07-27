@@ -25,7 +25,7 @@ SECRET_KEY = 'zfv!vsmmn77kc6jj_a+8&=04ft0hy52ae5^kfc1_#zhp=$fl*3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['nabil6391.pythonanywhere.com']
+ALLOWED_HOSTS = ['nabil6391.pythonanywhere.com','127.0.0.1']
 
 
 # Application definition
@@ -38,11 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'graphene_django',
-    'events',
     'django_filters',
     'blog',
     'ingredients',
     'inventory',
+    'incubator',
+    'bookstore',
+    'import_export',
 ]
 
 MIDDLEWARE = [
