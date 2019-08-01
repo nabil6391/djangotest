@@ -9,7 +9,7 @@ class App(models.Model):
     )
 
     def likes(self):
-        return AppLike.objects.filter(app_id=self.id).count()
+        return AppLike.objects.filter(app=self.id).count()
 
     likes.short_description = 'Likes'
 
@@ -33,16 +33,16 @@ class User(models.Model):
 
 
 class AppLike(models.Model):
-    app_id = models.ForeignKey(App, on_delete=models.CASCADE)
-    uid = models.ForeignKey(User, on_delete=models.CASCADE)
+    app = models.ForeignKey(App, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['app_id', 'uid'], name='App and User are unique together')
+            models.UniqueConstraint(fields=['app', 'user'], name='App and User are unique together')
         ]
 
     def __str__(self):
-        return str(self.uid.id) + " likes " + self.app_id.name
+        return str(self.user.id) + " likes " + self.app.name
 
     pass
 

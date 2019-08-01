@@ -17,7 +17,7 @@ class AppLikeType(DjangoObjectType):
     class Meta:
         model = AppLike
         interfaces = (Node,)
-        filter_fields = ['app_id', 'uid']
+        filter_fields = ['app', 'user']
 
 
 class SeerahTopicType(DjangoObjectType):
@@ -95,7 +95,7 @@ class CreateAppLike(graphene.Mutation):
         app = App.objects.get(id=app_id)
         user = User.objects.get_or_create(id=uid)
 
-        actor_instance = AppLike(app_id=app, uid=user[0])
+        actor_instance = AppLike(app=app, user=user[0])
         actor_instance.save()
         return CreateAppLike(ok=ok, app_like=actor_instance)
 
