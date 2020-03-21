@@ -31,9 +31,9 @@ ALLOWED_HOSTS = ['nabil6391.pythonanywhere.com','127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
-    'material.admin',
-    'material.admin.default',
-    # 'django.contrib.admin',
+    # 'material.admin',
+    # 'material.admin.default',
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
