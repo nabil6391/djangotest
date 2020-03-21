@@ -5,3 +5,8 @@ graphene_django
 django-filter
 django-import-export
 tablib==0.12.1
+djangorestframework
+markdown
+django-material-admin
+django-admin-generator
+drf-generators

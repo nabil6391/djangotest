@@ -31,17 +31,20 @@ ALLOWED_HOSTS = ['nabil6391.pythonanywhere.com','127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    'material.admin',
+    'material.admin.default',
+    # 'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'drf_generators',
+    'django_admin_generator',
     'graphene_django',
     'django_filters',
-    'blog',
-    'ingredients',
-    'inventory',
+    'hadith',
     'incubator',
     'bookstore',
     'import_export',
@@ -132,3 +135,16 @@ STATIC_ROOT = "/home/nabil6391/EventsApp/static"
 GRAPHENE = {
     'SCHEMA': 'EventsApp.schema.schema',
 }
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 50,
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+        'rest_framework.renderers.TemplateHTMLRenderer',
+        'rest_framework.renderers.AdminRenderer',
+        'rest_framework.renderers.HTMLFormRenderer',
+        'rest_framework.renderers.StaticHTMLRenderer',
+    ]
+}
+
