@@ -10,3 +10,5 @@ markdown
 django-material-admin
 django-admin-generator
 drf-generators
+django-admin-interface
+django-autocomplete-light
