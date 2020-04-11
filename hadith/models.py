@@ -18,25 +18,34 @@ class Collection(models.Model):
         managed = True
         db_table = 'Collection'
 
+    def __str__(self):
+        return self.name_en
+        pass
+
+
 
 class Book(models.Model):
-    collectionid = models.ForeignKey(Collection, on_delete=models.CASCADE)  
+    Collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
     bookid = models.CharField(blank=True, null=True, max_length=1000)  
     name_en = models.CharField(blank=True, null=True, max_length=1000)
     nameshort_en = models.CharField(blank=True, null=True, max_length=1000)
-    hadith_start = models.IntegerField(blank=True, null=True)
-    hadith_end = models.IntegerField(blank=True, null=True)
-    hadith_count = models.IntegerField(blank=True, null=True)
+    hadith_start = models.PositiveIntegerField(blank=True, null=True)
+    hadith_end = models.PositiveIntegerField(blank=True, null=True)
+    hadith_count = models.PositiveIntegerField(blank=True, null=True)
 
     class Meta:
         managed = True
         db_table = 'Book'
 
+    def __str__(self):
+        return self.name_en
+        pass
+
 
 class Chapter(models.Model):
-    collectionid = models.ForeignKey(Collection, on_delete=models.CASCADE)  
-    bookid = models.ForeignKey(Book, on_delete=models.CASCADE)  
-    chapid = models.CharField(blank=True, null=True, max_length=10)  
+    Collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
+    Book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    Chap = models.CharField(blank=True, null=True, max_length=10)
     name_en = models.CharField(blank=True, null=True, max_length=1000)
     name_ar = models.CharField(blank=True, null=True, max_length=1000)
 
@@ -44,14 +53,19 @@ class Chapter(models.Model):
         managed = True
         db_table = 'Chapter'
 
+    def __str__(self):
+        return self.name_en
+        pass
+
+
 
 class Hadith(models.Model):
-    global_id = models.TextField(db_column='global_id', primary_key=True) 
-    collectionid = models.ForeignKey(Collection, on_delete=models.CASCADE)  
-    bookid = models.ForeignKey(Book, on_delete=models.CASCADE)
-    chapid = models.ForeignKey(Chapter, on_delete=models.CASCADE)
-    hadithidcollection = models.CharField(blank=True, null=True, max_length=10)
-    hadithid = models.CharField(blank=True, null=True, max_length=10)
+    global_id = models.AutoField(primary_key=True)
+    Collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
+    Book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    Chap = models.ForeignKey(Chapter, on_delete=models.CASCADE)
+    hadithidcollection = models.PositiveIntegerField(max_length=10)
+    hadithid = models.PositiveIntegerField(blank=True, null=True, max_length=10)
     narrator_en = models.TextField(blank=True, null=True)  
     text_en = models.TextField(blank=True, null=True)  
     grade_en =  models.CharField(blank=True, null=True, max_length=100)
@@ -72,6 +86,10 @@ class Hadith(models.Model):
         managed = True
         db_table = 'hadith'
 
+    def __str__(self):
+        return self.Collection.name_en +" "+ self.Book.name_en +" "+ str(self.hadithid)
+        pass
+
 
 class Scholars(models.Model):
     id = models.IntegerField(db_column='Id', unique=True, primary_key=True)  
@@ -86,8 +104,8 @@ class Scholars(models.Model):
     howdied = models.CharField(blank=True, null=True, max_length=1000)
     livecity = models.CharField(blank=True, null=True, max_length=1000)
     interests = models.CharField(blank=True, null=True, max_length=1000)
-    mudhab = models.IntegerField(blank=True, null=True)
-    status = models.IntegerField(blank=True, null=True)
+    mudhab = models.PositiveIntegerField(blank=True, null=True)
+    status = models.PositiveIntegerField(blank=True, null=True)
     tags = models.TextField(blank=True, null=True)
     kunya = models.TextField(blank=True, null=True)
 
@@ -95,11 +113,16 @@ class Scholars(models.Model):
         managed = True
         db_table = 'Scholars'
 
+    def __str__(self):
+        return self.famousname
+        pass
+
+
 
 class HadithNarrators(models.Model):
     global_id = models.ForeignKey(Hadith, on_delete=models.CASCADE)
     narrator_id = models.ForeignKey(Scholars, on_delete=models.CASCADE)
-    position = models.IntegerField(blank=True, null=True,validators=[MinValueValidator(0),
+    position = models.PositiveIntegerField(blank=True, null=True,validators=[MinValueValidator(0),
                                                                 MaxValueValidator(5)])
     accuracy = models.FloatField(blank=True, null=True)
 
@@ -111,7 +134,7 @@ class HadithNarrators(models.Model):
 class RelatedHadiths(models.Model):
     global_id_target = models.ForeignKey(Hadith, on_delete=models.CASCADE,related_name='global_id_target')
     global_id_related = models.ForeignKey(Hadith, on_delete=models.CASCADE,related_name='global_id_related')
-    type = models.IntegerField(blank=True, null=True)
+    type = models.PositiveIntegerField(blank=True, null=True)
     accuracy = models.FloatField(blank=True, null=True)
 
     class Meta:
