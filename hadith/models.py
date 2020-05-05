@@ -28,7 +28,7 @@ class Collection(models.Model):
 class Book(models.Model):
     Collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
     bookid = models.CharField(blank=True, null=True, max_length=1000)  
-    name_en = models.CharField(blank=True, null=True, max_length=1000)
+    name = models.CharField(blank=True, null=True, max_length=1000)
     nameshort_en = models.CharField(blank=True, null=True, max_length=1000)
     hadith_start = models.PositiveIntegerField(blank=True, null=True)
     hadith_end = models.PositiveIntegerField(blank=True, null=True)
