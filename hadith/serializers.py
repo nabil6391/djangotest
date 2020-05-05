@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from hadith.models import Book, Chapter, Collection, Hadith, Scholars, HadithNarrators, RelatedHadiths
+from hadith.models import Book, Chapter, Collection, Hadith
 
 
 class BookSerializer(ModelSerializer):
@@ -27,25 +27,4 @@ class HadithSerializer(ModelSerializer):
 
     class Meta:
         model = Hadith
-        fields = '__all__'
-
-
-class ScholarsSerializer(ModelSerializer):
-
-    class Meta:
-        model = Scholars
-        fields = '__all__'
-
-
-class HadithNarratorsSerializer(ModelSerializer):
-
-    class Meta:
-        model = HadithNarrators
-        fields = '__all__'
-
-
-class RelatedHadithsSerializer(ModelSerializer):
-
-    class Meta:
-        model = RelatedHadiths
         fields = '__all__'

@@ -6,9 +6,11 @@ django-filter
 django-import-export
 tablib==0.12.1
 djangorestframework
+djangorestframework-jsonapi
 markdown
 django-material-admin
 django-admin-generator
 drf-generators
 django-admin-interface
 django-autocomplete-light
+elasticsearch_dsl

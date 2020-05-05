@@ -8,37 +8,45 @@ from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 from import_export.formats.base_formats import CSV
 
-from hadith.models import Book, Chapter, Collection, Scholars, HadithNarrators, Hadith, RelatedHadiths
+from hadith.models import Book, Chapter, Collection,  Hadith
 
+# class HadithNarratorInline(admin.TabularInline):
+#     model = HadithNarrators
+#     extra = 1
+#
+# class RelatedHadithInline(admin.TabularInline):
+#     model = RelatedHadiths
+#     fk_name = "hadith_target"
+#     extra = 1
 
 @admin.register(Book)
-class UserAdmin(ImportExportModelAdmin):
-
+class BookAdmin(ImportExportModelAdmin):
     pass
 
-
 @admin.register(Collection)
-class AppLikesAdmin(ImportExportModelAdmin):
+class CollectionAdmin(ImportExportModelAdmin):
     pass
 
 @admin.register(Chapter)
-class DictionaryAdmin(ImportExportModelAdmin):
+class ChapterAdmin(ImportExportModelAdmin):
     pass
 
-@admin.register(Scholars)
-class SeerahTopicAdmin(ImportExportModelAdmin):
-    pass
-
+# @admin.register(Scholars)
+# class ScholarsAdmin(ImportExportModelAdmin):
+#     # inlines = (HadithNarratorInline,)
+#     pass
 
 @admin.register(Hadith)
-class SeerahQuestionAdmin(ImportExportModelAdmin):
+class HadithAdmin(ImportExportModelAdmin):
+    # readonly_fields = ('related_en','narrators_en')
+    # inlines = (HadithNarratorInline, RelatedHadithInline)
     pass
-
-@admin.register(HadithNarrators)
-class SeerahQuestionAdmin(ImportExportModelAdmin):
-    pass
-
-@admin.register(RelatedHadiths)
-class SeerahQuestionAdmin(ImportExportModelAdmin):
-    pass
+#
+# @admin.register(HadithNarrators)
+# class HadithNarratorsAdmin(ImportExportModelAdmin):
+#     pass
+#
+# @admin.register(RelatedHadiths)
+# class RelatedHadithsAdmin(ImportExportModelAdmin):
+#     pass
 

@@ -8,18 +8,19 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
+from incubator.models import User
 
 class Collection(models.Model):
-    collectionid = models.AutoField(db_column='CollectionID', primary_key=True)  
-    name_en = models.TextField(blank=True, null=True)
-    desc_en = models.TextField(blank=True, null=True)
+    collectionid = models.AutoField(primary_key=True)
+    name = models.CharField(blank=True, null=True, max_length=1000)
+    desc = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = True
         db_table = 'Collection'
 
     def __str__(self):
-        return self.name_en
+        return self.name
         pass
 
 
@@ -38,7 +39,7 @@ class Book(models.Model):
         db_table = 'Book'
 
     def __str__(self):
-        return self.name_en
+        return self.name
         pass
 
 
@@ -54,7 +55,7 @@ class Chapter(models.Model):
         db_table = 'Chapter'
 
     def __str__(self):
-        return self.name_en
+        return self.name
         pass
 
 
@@ -63,123 +64,105 @@ class Hadith(models.Model):
     global_id = models.AutoField(primary_key=True)
     Collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
     Book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    Chap = models.ForeignKey(Chapter, on_delete=models.CASCADE)
-    hadithidcollection = models.PositiveIntegerField(max_length=10)
-    hadithid = models.PositiveIntegerField(blank=True, null=True, max_length=10)
-    narrator_en = models.TextField(blank=True, null=True)  
-    text_en = models.TextField(blank=True, null=True)  
-    grade_en =  models.CharField(blank=True, null=True, max_length=100)
-    reference_en = models.TextField(blank=True, null=True)  
-    narrator_ar = models.TextField(blank=True, null=True)  
-    text_ar = models.TextField(blank=True, null=True)  
-    narrator_arend = models.TextField(blank=True, null=True)  
-    grade_ar = models.CharField(blank=True, null=True, max_length=100)
-    narrator_ar_diacless = models.TextField(blank=True, null=True)  
-    text_ar_diacless = models.TextField(blank=True, null=True)  
-    narrator_arend_diacless = models.TextField(blank=True, null=True)  
-    grade_ar_diacless =  models.CharField(blank=True, null=True, max_length=100)
-    
-    related_en = models.TextField(blank=True, null=True)
-    narrators = models.TextField(blank=True, null=True)  
+    Chap = models.ForeignKey(Chapter, on_delete=models.CASCADE, blank=True, null=True)
+    hadith_no = models.PositiveIntegerField(blank=True, null=True)
+    narrator = models.CharField(blank=True, null=True, max_length=100)
+    text = models.TextField(default="")
+    narrator_ar = models.CharField(blank=True, null=True, max_length=100)
+    text_ar = models.TextField(default="")
+    grade =  models.CharField(blank=True, null=True, max_length=100)
+    reference = models.TextField(blank=True, null=True)
+
+# related_hadiths = models.ManyToManyField('self',through='RelatedHadiths',symmetrical=False)
+    # narrators = models.ManyToManyField('Scholars',through='HadithNarrators',blank = True)
 
     class Meta:
         managed = True
         db_table = 'hadith'
 
-    def __str__(self):
-        return self.Collection.name_en +" "+ self.Book.name_en +" "+ str(self.hadithid)
-        pass
-
-
-class Scholars(models.Model):
-    id = models.IntegerField(db_column='Id', unique=True, primary_key=True)  
-    famousname = models.CharField(blank=True, null=True, max_length=1000)
-    fullname = models.CharField(blank=True, null=True, max_length=1000)
-    othername = models.CharField(blank=True, null=True, max_length=1000)
-    rank = models.IntegerField(blank=True, null=True)
-    birthdate = models.CharField(blank=True, null=True, max_length=1000)
-    birthcity = models.CharField(blank=True, null=True, max_length=1000)
-    deathdate = models.CharField(blank=True, null=True, max_length=1000)
-    deathcity = models.CharField(blank=True, null=True, max_length=1000)
-    howdied = models.CharField(blank=True, null=True, max_length=1000)
-    livecity = models.CharField(blank=True, null=True, max_length=1000)
-    interests = models.CharField(blank=True, null=True, max_length=1000)
-    mudhab = models.PositiveIntegerField(blank=True, null=True)
-    status = models.PositiveIntegerField(blank=True, null=True)
-    tags = models.TextField(blank=True, null=True)
-    kunya = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = True
-        db_table = 'Scholars'
+    # def related(self):
+    #     return self.related_hadiths.all()
+    #     pass
+    #
+    # def narrators(self):
+    #     return self.narrators.all()
+    #     pass
 
     def __str__(self):
-        return self.famousname
+        return self.Collection.name +" "+ self.Book.name +" "+ str(self.hadithid)
         pass
 
+#
 
 
-class HadithNarrators(models.Model):
-    global_id = models.ForeignKey(Hadith, on_delete=models.CASCADE)
-    narrator_id = models.ForeignKey(Scholars, on_delete=models.CASCADE)
-    position = models.PositiveIntegerField(blank=True, null=True,validators=[MinValueValidator(0),
-                                                                MaxValueValidator(5)])
-    accuracy = models.FloatField(blank=True, null=True)
 
-    class Meta:
-        managed = True
-        db_table = 'hadithnarattors'
+# class HadithNarrators(models.Model):
+#     hadith = models.ForeignKey(Hadith, on_delete=models.CASCADE)
+#     narrator = models.ForeignKey(Scholars, on_delete=models.CASCADE)
+#     position = models.PositiveIntegerField(blank=True, null=True,validators=[MinValueValidator(0),
+#                                                                 MaxValueValidator(5)])
+#     accuracy = models.FloatField(blank=True, null=True)
+#
+#     class Meta:
+#         managed = True
+#         db_table = 'hadithnarattors'
+#         constraints = [
+#             models.UniqueConstraint(fields=['hadith', 'narrator'], name='Hadith and Narrator are unique together')
+#         ]
+#
+#     def __str__(self):
+#         return self.hadith.__str__() + " : "+ self.narrator.famousname
+#         pass
 
+# class RelatedHadiths(models.Model):
+#     hadith_target = models.ForeignKey(Hadith, on_delete=models.CASCADE,related_name='global_id_target')
+#     hadith_related = models.ForeignKey(Hadith, on_delete=models.CASCADE,related_name='global_id_related')
+#     type = models.PositiveIntegerField(blank=True, null=True)
+#     accuracy = models.FloatField(blank=True, null=True)
+#
+#     class Meta:
+#         managed = True
+#         db_table = 'relatedhadiths'
+#         constraints = [
+#                     models.UniqueConstraint(fields=['hadith_target', 'hadith_related'], name='Hadith and User are unique together'),
+#                 ]
+#
+#     def __str__(self):
+#         return self.hadith_target.__str__() + " : "+ self.hadith_related.__str__()
+#         pass
 
-class RelatedHadiths(models.Model):
-    global_id_target = models.ForeignKey(Hadith, on_delete=models.CASCADE,related_name='global_id_target')
-    global_id_related = models.ForeignKey(Hadith, on_delete=models.CASCADE,related_name='global_id_related')
-    type = models.PositiveIntegerField(blank=True, null=True)
-    accuracy = models.FloatField(blank=True, null=True)
-
-    class Meta:
-        managed = True
-        db_table = 'relatedhadiths'
 
 # crowdsourced data
 # class NarratorSuggestion(models.Model):
-#     app = models.ForeignKey(App, on_delete=models.CASCADE)
 #     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     hadith = models.ForeignKey(Hadith, on_delete=models.CASCADE)
+#     narrator = models.ForeignKey(Scholars, on_delete=models.CASCADE)
+#     position = models.PositiveIntegerField(blank=True, null=True,validators=[MinValueValidator(0),
+#                                                                              MaxValueValidator(5)])
 #
 #     class Meta:
 #         constraints = [
-#             models.UniqueConstraint(fields=['app', 'user'], name='App and User are unique together')
+#             models.UniqueConstraint(fields=['hadith', 'user','narrator'], name='Hadith and User are unique together')
 #         ]
 #
 #     def __str__(self):
-#         return str(self.user.id) + " likes " + self.app.name
+#         return str(self.user.id) + " likes " + self.hadith
 #
 #     pass
-#
+# #
 # class RelatedHadithSuggestion(models.Model):
-#     app = models.ForeignKey(App, on_delete=models.CASCADE)
 #     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     hadith = models.ForeignKey(Hadith, on_delete=models.CASCADE)
+#     narrator = models.ForeignKey(Scholars, on_delete=models.CASCADE)
+#
 #
 #     class Meta:
 #         constraints = [
-#             models.UniqueConstraint(fields=['app', 'user'], name='App and User are unique together')
+#             models.UniqueConstraint(fields=['user', 'hadith','narrator'], name='Hadith and User are unique together')
 #         ]
 #
 #     def __str__(self):
-#         return str(self.user.id) + " likes " + self.app.name
+#         return str(self.user.id) + " likes " + self.Hadith.name
 #
 #     pass
-#
-# class RelatedHadithSuggestion(models.Model):
-#     app = models.ForeignKey(App, on_delete=models.CASCADE)
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#
-#     class Meta:
-#         constraints = [
-#             models.UniqueConstraint(fields=['app', 'user'], name='App and User are unique together')
-#         ]
-#
-#     def __str__(self):
-#         return str(self.user.id) + " likes " + self.app.name
-#
-#     pass
+# #

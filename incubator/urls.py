@@ -4,6 +4,7 @@ from incubator import views
 
 router = SimpleRouter()
 
+router.register(r'', views.AppViewSet, 'App')
 router.register(r'app', views.AppViewSet, 'App')
 router.register(r'user', views.UserViewSet, 'User')
 router.register(r'applike', views.AppLikeViewSet, 'AppLike')
